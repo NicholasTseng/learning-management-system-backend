@@ -34,9 +34,19 @@ export async function register(req: Request, res: Response) {
 			[username, email, hashedPassword, role, salt]
 		);
 
-		const userId = (result as ResultSetHeader).insertId;
+		const jwtSecret = process.env.JWT_SECRET;
+		if (!jwtSecret)
+			return res.status(500).json({ message: 'JWT secret is not defined' });
 
-		res.status(201).json({ user_id: userId });
+		const token = jwt.sign(
+			{ userId: (result as ResultSetHeader).insertId, role: role },
+			jwtSecret,
+			{
+				expiresIn: '24h',
+			}
+		);
+
+		res.status(201).json({ token });
 	} catch (error) {
 		console.error('Error registering user:', error);
 		res.status(500).json({ message: 'Internal server error' });
