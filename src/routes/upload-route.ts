@@ -18,9 +18,7 @@ const storage = multer.diskStorage({
 		callback(null, path.join(__dirname));
 	},
 	filename: (req, file, callback) => {
-		const hashedFileName = `${generateHash(file.originalname)}.${
-			file.mimetype.split('/')[1]
-		}`;
+		const hashedFileName = `${generateHash(file.originalname)}`;
 		callback(null, hashedFileName);
 	},
 });

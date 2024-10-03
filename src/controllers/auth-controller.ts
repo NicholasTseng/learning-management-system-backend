@@ -30,7 +30,7 @@ export async function register(req: Request, res: Response) {
 		const hashedPassword = await bcrypt.hash(decodedPassword, salt);
 
 		const [result] = await pool.execute(
-			'INSERT INTO user (username, email, password, role, salt) VALUES (?, ?, ?, ?, ?)',
+			'INSERT INTO users (username, email, password, role, salt) VALUES (?, ?, ?, ?, ?)',
 			[username, email, hashedPassword, role, salt]
 		);
 
@@ -62,7 +62,7 @@ export async function login(req: Request, res: Response) {
 			return res.status(400).json({ message: 'Missing required fields' });
 
 		const [rows] = await pool.execute(
-			'SELECT id, password, role, salt FROM user WHERE username = ?',
+			'SELECT id, password, role, salt FROM users WHERE username = ?',
 			[username]
 		);
 

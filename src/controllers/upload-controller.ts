@@ -16,7 +16,7 @@ export async function uploadVideos(req: Request, res: Response) {
 		await storage.bucket(bucketName).upload(localFilePath, {
 			destination: destination,
 			metadata: {
-				contentType: req.file.mimetype, // Set the correct MIME type
+				contentType: req.file.mimetype,
 			},
 		});
 
