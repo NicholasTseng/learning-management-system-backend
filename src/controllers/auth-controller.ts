@@ -55,21 +55,21 @@ export async function register(req: Request, res: Response) {
 
 export async function login(req: Request, res: Response) {
 	try {
-		const { username, password } = req.body;
+		const { email, password } = req.body;
 		const decodedPassword = Buffer.from(password, 'base64').toString('utf-8');
 
-		if (!username || !decodedPassword)
+		if (!email || !decodedPassword)
 			return res.status(400).json({ message: 'Missing required fields' });
 
 		const [rows] = await pool.execute(
-			'SELECT id, password, role, salt FROM users WHERE username = ?',
-			[username]
+			'SELECT id, password, role, salt FROM users WHERE email = ?',
+			[email]
 		);
 
 		const users = rows as any[];
 
 		if (users.length === 0) {
-			return res.status(400).json({ message: 'Invalid username or password' });
+			return res.status(400).json({ message: 'Invalid email or password' });
 		}
 
 		const user = users[0];
@@ -77,7 +77,7 @@ export async function login(req: Request, res: Response) {
 		const passwordMatch = hashedPassword === user.password;
 
 		if (!passwordMatch)
-			return res.status(400).json({ message: 'Invalid username or password' });
+			return res.status(400).json({ message: 'Invalid email or password' });
 
 		const jwtSecret = process.env.JWT_SECRET;
 		if (!jwtSecret)
