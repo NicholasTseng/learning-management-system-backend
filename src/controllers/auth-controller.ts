@@ -16,7 +16,7 @@ export async function register(req: Request, res: Response) {
 			return res.status(400).json({ message: 'Missing required fields' });
 
 		const [existingUsers] = await pool.execute(
-			'SELECT id FROM user WHERE email = ? OR username = ?',
+			'SELECT id FROM users WHERE email = ? OR username = ?',
 			[email, username]
 		);
 
