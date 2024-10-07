@@ -16,7 +16,7 @@ export async function getUser(req: Request, res: Response) {
 			userId: number;
 		};
 
-		const sql = 'SELECT * FROM users WHERE id = ?';
+		const sql = 'SELECT id, username, email, role FROM users WHERE id = ?';
 
 		const [result] = await pool.execute(sql, [decoded.userId]);
 
