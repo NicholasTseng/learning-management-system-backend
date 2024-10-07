@@ -68,9 +68,8 @@ export async function login(req: Request, res: Response) {
 
 		const users = rows as any[];
 
-		if (users.length === 0) {
+		if (users.length === 0)
 			return res.status(400).json({ message: 'Invalid email or password' });
-		}
 
 		const user = users[0];
 		const hashedPassword = await bcrypt.hash(decodedPassword, user.salt);
