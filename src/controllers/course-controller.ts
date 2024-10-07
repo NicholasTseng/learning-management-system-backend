@@ -23,13 +23,13 @@ export function createCourse(req: Request, res: Response) {
 		const course = req.body;
 
 		const sql =
-			'INSERT INTO courses (course_name, manager_user_id, description, creation_date) VALUES (?, ?, ?, NOW())';
+			'INSERT INTO courses (name, manager_user_id, description) VALUES (?, ?, ?)';
 
 		pool
-			.execute(sql, [course.course_name, managerUserId, course.description])
+			.execute(sql, [course.name, managerUserId, course.description])
 			.then(() =>
 				res.status(201).json({
-					course_name: course.course_name,
+					name: course.name,
 					description: course.description,
 				})
 			)
@@ -85,8 +85,7 @@ export function deleteCourse(req: Request, res: Response) {
 		if (decoded.role !== 'educator')
 			return res.status(403).json({ message: 'Forbidden' });
 
-		const sql =
-			'DELETE FROM courses WHERE course_id = ? AND manager_user_id = ?';
+		const sql = 'DELETE FROM courses WHERE id = ? AND manager_user_id = ?';
 
 		pool
 			.execute(sql, [courseId, managerUserId])
