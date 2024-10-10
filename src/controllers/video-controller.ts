@@ -70,7 +70,7 @@ export async function uploadVideos(req: Request, res: Response) {
 		res.status(200).json({ filePath: publicUrl });
 	} catch (error) {
 		console.error('Error uploading file:', error);
-		res.status(500).json({ message: 'Internal server error' });
+		res.status(500).json({ message: 'Internal server error', error });
 	}
 }
 
