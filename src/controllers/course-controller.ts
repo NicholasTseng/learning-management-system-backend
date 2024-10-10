@@ -145,9 +145,9 @@ export function updateCourse(req: Request, res: Response) {
 		const fields = [];
 		const values = [];
 
-		if (course.course_name) {
-			fields.push('course_name = ?');
-			values.push(course.course_name);
+		if (course.name) {
+			fields.push('name = ?');
+			values.push(course.name);
 		}
 
 		if (course.description) {
@@ -162,7 +162,7 @@ export function updateCourse(req: Request, res: Response) {
 
 		const sql = `UPDATE courses SET ${fields.join(
 			', '
-		)} WHERE course_id = ? AND manager_user_id = ?`;
+		)} WHERE id = ? AND manager_user_id = ?`;
 
 		pool
 			.execute(sql, values)

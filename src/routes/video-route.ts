@@ -1,5 +1,10 @@
 import { Router, Request } from 'express';
-import { uploadVideos } from '../controllers';
+import {
+	uploadVideos,
+	getVideos,
+	deleteVideo,
+	updateVideo,
+} from '../controllers';
 import multer from 'multer';
 import crypto from 'crypto';
 import path from 'path';
@@ -15,7 +20,7 @@ const generateHash = (originalName: string): string => {
 
 const storage = multer.diskStorage({
 	destination: (req, file, callback) => {
-		callback(null, path.join(__dirname));
+		callback(null, '');
 	},
 	filename: (req, file, callback) => {
 		const hashedFileName = `${generateHash(file.originalname)}`;
@@ -38,5 +43,8 @@ const fileFilter = (
 const upload = multer({ storage, fileFilter });
 
 router.post('/upload', upload.single('video'), uploadVideos);
+router.get('/get-videos/:id', getVideos);
+router.delete('/delete-video/:course_id/:id', deleteVideo);
+router.put('/update-video/:course_id/:id', updateVideo);
 
 export default router;
